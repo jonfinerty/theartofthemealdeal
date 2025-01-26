@@ -1,5 +1,10 @@
+from dataclasses import fields
 import os
+import csv
+from pathlib import Path
 from bs4 import BeautifulSoup
+
+from details import Product, download_html
 
 def extract_product_details(html_file):
     """
@@ -23,16 +28,55 @@ def extract_product_details(html_file):
     for product in name_elem:
         p = product.find('h3').find('a')
         name = ' '.join(p.get_text(strip=True).split())
+        print(name)
         url = p['href']
-        price = product.find('p', class_='pricePerUnit').get_text(strip=True)
+        
+        file_exists = os.path.exists("product.csv")
+        if file_exists:
+            with open("product.csv", 'r') as file:
+                if url in file.read():
+                    print("Already scaped")
+                    continue
 
+        product = download_html(url)
+        # price = product.find('p', class_='pricePerUnit').get_text(strip=True)
+
+        products.append(product)
     
-        products.append( {
-            'name': name,
-            'price': price,
-            'url': url
-        })
+        dataclass_to_csv(product, "product.csv")
+        # products.append( {
+        #     'name': name,
+        #     'price': price,
+        #     'url': url
+        # })
     return products
+
+
+def dataclass_to_csv(product: Product, filename: str):
+    """
+    Write a list of dataclass objects to a CSV file, appending if exists.
+    
+    :param products: List of Product dataclass instances
+    :param filename: Name of the output CSV file
+    """
+    field_names = [field.name for field in fields(Product)]
+    
+    # Check if file exists to determine write mode
+    file_exists = os.path.exists(filename)
+    # if not file_exists:
+    #     print("hsdg")
+    #     # open(filename, 'w').close()
+    #     Path(filename).touch()
+
+    with open(filename, 'a', newline='') as csvfile:
+        csv_writer = csv.DictWriter(csvfile, fieldnames=field_names)
+        
+        # Write header only if file is new
+        if not file_exists:
+            csv_writer.writeheader()
+        
+        csv_writer.writerow(vars(product))
+
 
 def process_html_files(directory):
     """
@@ -46,21 +90,13 @@ def process_html_files(directory):
     """
     
     for filename in os.listdir(directory):
-        if filename.endswith('.html'):
+        if filename.endswith('drinks.html'):
             file_path = os.path.join(directory, filename)
             try:
                 products = extract_product_details(file_path)
             except Exception as e:
                 print(f"Error processing {filename}: {e}")
-            import csv
-            with open(f'{filename}.csv', 'w', newline='', encoding='utf-8') as csvfile:
-                fieldnames = ['name', 'price', 'url']
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                
-                writer.writeheader()
-                for product in products:
-                    writer.writerow(product)
-            
+
     return products
 
 # Example usage

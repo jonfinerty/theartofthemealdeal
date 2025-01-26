@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 import re
 from enum import Enum
 
@@ -8,8 +8,11 @@ from enum import Enum
 def extract_lozenge(soup, type):
     element = soup.select_one(f'li.lozenge.{type}')
 
+    if element is None:
+        return {'level': None, 'amount': None}
+    
     # Check the specific class level
-    print(element['class'])
+    # print(element['class'])
     level = None
     if 'high' in element['class']:
         level = NutritionLevel.HIGH
@@ -18,7 +21,14 @@ def extract_lozenge(soup, type):
     elif 'low' in element['class']:
         level = NutritionLevel.LOW
     
-    amount = element.find('div',{'class':'lozengeHeaderSection'}).find_all('p')[-1].get_text()
+    amount_elems = element.find('div',{'class':'lozengeHeaderSection'}).find_all('p')
+    if type == 'energy':
+        for x in amount_elems:
+            if x.get_text().endswith('kcal'):
+                amount = x.get_text()
+    else: 
+        amount = amount_elems[-1].get_text()
+
     return {'level': level, 'amount': amount}
 
 def parse_value(value_str):
@@ -28,8 +38,8 @@ def parse_value(value_str):
 
 def extract_nutritional_values(soup):
     nutrition_table = soup.find('table', class_='nutritionTable')
-    
-    nutrition_dict = {}
+    if nutrition_table is None:
+        return NutritionalValues()
     rows = nutrition_table.find_all('tr', class_=['tableRow0', 'tableRow1'])
     values={}
     for row in rows:
@@ -51,38 +61,54 @@ class NutritionLevel(Enum):
     MEDIUM = 'medium'
     LOW = 'low'
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class NutritionalValues:
-    Energy: float
-    Fat: float
-    Saturates: float
-    Mono_unsaturates: float
-    Polyunsaturates: float
-    Carbohydrate: float
-    Sugars: float
-    Starch: float
-    Fibre: float
-    Protein: float
-    Salt: float
+    Energy: float | None = None
+    Fat: float | None= None
+    Saturates: float | None= None
+    Mono_unsaturates: float| None= None
+    Polyunsaturates: float| None= None
+    Carbohydrate: float| None= None
+    Sugars: float| None= None
+    Starch: float| None= None
+    Fibre: float| None= None
+    Protein: float| None = None
+    Salt: float| None = None
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Product:
     sku: str
     name: str
+    url: str
+    price: str
     img_url: str
     description: str
     allegens: set[str]
     weight: int
+    cals: float
     fat_level: NutritionLevel
     sat_level: NutritionLevel
     sugar_level: NutritionLevel
     salt_level: NutritionLevel
-    rating: float
-    nutritional_values: NutritionalValues
+    rating: float | None
+    Energy: float | None = None
+    Fat: float | None= None
+    Saturates: float | None= None
+    Mono_unsaturates: float| None= None
+    Polyunsaturates: float| None= None
+    Carbohydrate: float| None= None
+    Sugars: float| None= None
+    Starch: float| None= None
+    Fibre: float| None= None
+    Protein: float| None = None
+    Salt: float| None = None
+
+  
     
 # {'Energy': '484kcal', 'Fat': '26.9g', 'Saturates': '10.6g', 'Mono-unsaturates': '11.5g', 'Polyunsaturates': '4.8g', 'Carbohydrate': '40.2g', 'Sugars': '3.2g', 'Starch': '37.0g', 'Fibre': '3.7g', 'Protein': '18.4g', 'Salt': '1.65g'}
 
 def download_html(url):
+    print(f"processing: {url}")
     with sync_playwright() as p:
         # Launch a browser (headless or visible)
         browser = p.chromium.launch(headless=False)  # Set headless=True for faster, invisible scraping
@@ -90,7 +116,6 @@ def download_html(url):
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
         )
         page = context.new_page()
-
         try:
             # Navigate to the page
             page.goto(url, timeout=60000)  # Increase timeout if needed
@@ -103,11 +128,14 @@ def download_html(url):
 
             soup = BeautifulSoup(html_content, 'html.parser')
 
-            image_url = soup.find('img', {'class': 'pd__image pd__image__nocursor'})['src']
+            image_url = soup.find('img', {'class': 'pd__image'})['src']
+
             # print(image_url)
             sku = soup.find('span', {'id': 'productSKU'}).get_text()
+
+            price = soup.find('span', {'data-testid' :'pd-retail-price'}).get_text()
             # print(sku)
-            header = soup.find('h1').get_text(strip=True)
+            name = soup.find('h1').get_text(strip=True)
             description =soup.find('div', {'class':'pd__description'}).get_text(strip=True)
             # print(header)
             # print(description)
@@ -116,29 +144,46 @@ def download_html(url):
             sats = extract_lozenge(soup, 'saturates')
             sugars = extract_lozenge(soup, 'sugars')
             salt = extract_lozenge(soup, 'salt')
-            # print(cals)
-            # print(fat)
-            # print(sats)
-            # print(sugars)
-            # print(salt)
+            print(cals)
+            print(fat)
+            print(sats)
+            print(sugars)
+            print(salt)
 
             allegens_elements = soup.select('div.productText strong')
             allegens = set()
             for a in allegens_elements:
                 text = a.get_text()
-                if text.strip() == 'INGREDIENTS:' or text.strip() =='Table of Nutritional Information':
+                if text.strip() == 'INGREDIENTS:' or 'Information' in text.strip():
                     continue
                 allegens.add(text)
 
             # print(allegens)
 
-            match = re.search(r'Typical Values per 100g : Energy 1217 kJ/(\d+)\s?kcal',html_content)
-            kcal_value = int(match.group(1))
-            # print(f'Extracted kcal value: {kcal_value}')
-            weight = ( int(cals['amount'].removesuffix('kcal')) / kcal_value) * 100
-            # print(f"{weight}g") 
-
-            rating = soup.select_one('div.pd-reviews__summary__text').get_text().strip().split(' ')[0]
+            match_1 =  re.search(r'100g\s?(?:\s*\(as sold\))?:\s?(?:Energy)?\s?\d+\.?\d*\s?kJ/\s?(\d+\.?\d*)\s?kcal',html_content)
+            match_2 =  re.search(r'100ml\s?(?:\s*\(as sold\))?:\s?(?:Energy)?\s?\d+\.?\d*\s?kJ/\s?(\d+\.?\d*)\s?kcal',html_content)
+            # match_4 = re.search(r'Energy per 100g (as sold): 1577kJ/374kcal')
+            kcal_value = None
+            if match_1:
+                kcal_value = float(match_1.group(1))
+                # print(f'Extracted kcal value: {kcal_value}')
+                # weight = ( int(cals['amount'].removesuffix('kcal')) / kcal_value) * 100
+                # print(f"{weight}g") 
+            elif match_2:
+                kcal_value = float(match_2.group(1))
+  
+            if kcal_value is not None and cals['amount'] is not None:
+                print(f'Extracted kcal value: {kcal_value}')
+                print(float(cals['amount'].removesuffix('kcal')))
+                weight = ( float(cals['amount'].removesuffix('kcal')) / kcal_value) * 100
+                print(f"weight {weight}")
+            else:
+                weight = None
+            rating_elem = soup.select_one('div.pd-reviews__summary__text')
+            if rating_elem is not None:
+                rating = float(rating_elem.get_text().strip().split(' ')[0])
+            else:
+                rating = None
             # print(rating)
 
             nutritional_values = extract_nutritional_values(soup)
@@ -152,23 +197,29 @@ def download_html(url):
             print(f"Error: {e}")
         finally:
             browser.close()
+
     return Product(
-        sku,
-        header,
-        image_url,
-        description,
-        allegens,
-        weight,
-        fat['level'],
-        sats['level'],
-        sugars['level'],
-        salt['level'],
-        float(rating),
-        nutritional_values
+        sku=sku,
+        name=name,
+        url=url,
+        price=price,
+        img_url=image_url,
+        description=description,
+        allegens=allegens,
+        weight=weight,
+        cals=cals['amount'],
+        fat_level=fat['level'],
+        sat_level=sats['level'],
+        sugar_level=sugars['level'],
+        salt_level=salt['level'],
+        rating=rating,
+        **asdict(nutritional_values)   
     )
 
 
 # URL of the product page
-url = "https://www.sainsburys.co.uk/gol-ui/product/sainsburys-cheese---onion-sandwich"
-product = download_html(url)
-print(product)
+# url = "https://www.sainsburys.co.uk/gol-ui/product/sainsburys-cheese---onion-sandwich"
+# url = "https://www.sainsburys.co.uk/shop/gb/groceries/product/details/coca-cola--diet-500ml"
+# url = "https://www.sainsburys.co.uk/shop/gb/groceries/product/details/trek-power-biscoff-protein-bar-55g"
+# product = download_html(url)
+# print(product)
