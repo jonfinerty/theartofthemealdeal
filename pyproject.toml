@@ -1,0 +1,13 @@
+[project]
+name = "meal-dealer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "cloudscraper>=1.2.71",
+    "pandas>=2.2.3",
+    "playwright>=1.49.1",
+    "requests>=2.32.3",
+]
