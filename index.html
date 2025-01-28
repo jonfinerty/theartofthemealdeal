@@ -61,45 +61,31 @@
         <h1>The Art of the Meal Deal</h1>
         
         <div class="sentence">
-            What's the deal with the 
-            <select id="mode" class="inline-select">
-                <option value="max">most</option>
-                <option value="min">least</option>
-            </select>
+            What's the 
             <select id="property" class="inline-select">
-                <option value="cals">calories</option>
-                <option value="price">price</option>
-                <option value="Fat">fat</option>
-                <option value="Salt">salt</option>
-                <option value="Sugar">sugar</option>
+                <option value="cals" data-mode="max">highest calorie</option>
+                <option value="cals" data-mode="min">lowest calorie</option>
+                <option value="price" data-mode="max">best deal</option>
+                <option value="price" data-mode="min">worst deal</option>
+                <option value="weight" data-mode="max">heaviest</option>
+                <option value="weight" data-mode="min">lightest</option>
+                <!-- <option value="allegens" data-mode="max">most allergic</option>
+                <option value="allegens" data-mode="min">least allergic</option>
+                <option value="most-dense" data-mode="max">most calorie dense</option>
+                <option value="lest-dense" data-mode="min">least calorie dense</option> -->
             </select>
-            ?
+            Sainsbury's meal deal?
         </div>
 
-        <!-- <div class="controls">
-            <select id="property">
-                <option value="cals">Calories</option>
-                <option value="price">Price</option>
-                <option value="Fat">Fat</option>
-                <option value="Salt">Salt</option>
-                <option value="Sugar">Sugar</option>
-            </select>
-            <button id="maxButton" onclick="setMode('max')" class="active">Maximize</button>
-            <button id="minButton" onclick="setMode('min')">Minimize</button>
-            <button id="randomiseButton" onclick="mealDealRoulette()">Randomise</button>
-
-        </div> -->
-
-        <div id="result" class="result">
-            Select a property and optimization mode to find your meal deal
-        </div>
+        <div id="result" class="result"></div>
 
     </div>
 
     <script>
         function findOptimalMeal() {
-            const mode = document.getElementById('mode').value
-            const property = document.getElementById('property').value;
+            select = document.getElementById('property')
+            const property = select.value;
+            const mode = select.options[select.selectedIndex].dataset.mode;
             
             // Find optimal combination
             let optimalMeal = null;
@@ -128,7 +114,7 @@
             // Display result
             const propertyLabel = document.getElementById('property').options[document.getElementById('property').selectedIndex].text;
             document.getElementById('result').innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 120px 0;">
                     <div class="meal-item" title="${optimalMeal.main.name}">
                         <img src="${optimalMeal.main.img_url}" alt="${optimalMeal.main.name}" style="width: 100px; height: auto;">
                     </div>
@@ -141,7 +127,10 @@
                         <img src="${optimalMeal.drink.img_url}" alt="${optimalMeal.drink.name}" style="width: 100px; height: auto;">
                     </div>
                 </div>
-                <p style="text-align: center;"><strong>Total ${propertyLabel}:</strong> ${optimalMeal.total.toFixed(2)}</p>`;
+                <p><strong>Main:</strong> ${optimalMeal.main.name}</p>
+                <p><strong>Side:</strong> ${optimalMeal.side.name}</p>
+                <p><strong>Drink:</strong> ${optimalMeal.drink.name}</p>
+                <p><strong>Total ${propertyLabel}:</strong> ${optimalMeal.total.toFixed(2)}</p>`;
         }
 
         function mealDealRoulette() {
@@ -179,7 +168,6 @@
 
         // Add event listeners
         document.getElementById('property').addEventListener('change', findOptimalMeal);
-        document.getElementById('mode').addEventListener('change', findOptimalMeal);
 
         // document.getElementById('randomiseButton').addEventListener('click', mealDealRoulette);
         
