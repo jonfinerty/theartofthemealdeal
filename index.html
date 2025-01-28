@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meal Deal Optimizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .result {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .active {
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+        .sentence {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .inline-select {
+            font-size: inherit;
+            display: inline;
+            width: auto;
+            padding: 2px 5px;
+            border: none;
+            border-bottom: 2px solid #333;
+            background: transparent;
+            cursor: pointer;
+        }
+        .inline-select:focus {
+            outline: none;
+            border-bottom-color: #666;
+        }
+    </style>
+    <script src="mains.js"></script>
+    <script src="sides.js"></script>
+    <script src="drinks.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>The Art of the Meal Deal</h1>
+        
+        <div class="sentence">
+            What's the deal with the 
+            <select id="mode" class="inline-select">
+                <option value="max">most</option>
+                <option value="min">least</option>
+            </select>
+            <select id="property" class="inline-select">
+                <option value="cals">calories</option>
+                <option value="price">price</option>
+                <option value="Fat">fat</option>
+                <option value="Salt">salt</option>
+                <option value="Sugar">sugar</option>
+            </select>
+            ?
+        </div>
+
+        <!-- <div class="controls">
+            <select id="property">
+                <option value="cals">Calories</option>
+                <option value="price">Price</option>
+                <option value="Fat">Fat</option>
+                <option value="Salt">Salt</option>
+                <option value="Sugar">Sugar</option>
+            </select>
+            <button id="maxButton" onclick="setMode('max')" class="active">Maximize</button>
+            <button id="minButton" onclick="setMode('min')">Minimize</button>
+            <button id="randomiseButton" onclick="mealDealRoulette()">Randomise</button>
+
+        </div> -->
+
+        <div id="result" class="result">
+            Select a property and optimization mode to find your meal deal
+        </div>
+
+    </div>
+
+    <script>
+        function findOptimalMeal() {
+            const mode = document.getElementById('mode').value
+            const property = document.getElementById('property').value;
+            
+            // Find optimal combination
+            let optimalMeal = null;
+            let optimalValue = mode === 'max' ? -Infinity : Infinity;
+
+            mains.forEach(main => {
+                sides.forEach(side => {
+                    drinks.forEach(drink => {
+                        if (main[property] === null || side[property] === null || drink[property] === null) {
+                            return
+                        }
+                        const totalValue = main[property] + side[property] + drink[property];
+                        
+                        if (mode === 'max' && totalValue > optimalValue) {
+                            optimalValue = totalValue;
+                            optimalMeal = {main, side, drink, total: totalValue};
+                        }
+                        else if (mode === 'min' && totalValue < optimalValue) {
+                            optimalValue = totalValue;
+                            optimalMeal = {main, side, drink, total: totalValue};
+                        }
+                    });
+                });
+            });
+
+            // Display result
+            const propertyLabel = document.getElementById('property').options[document.getElementById('property').selectedIndex].text;
+            document.getElementById('result').innerHTML = `
+<div class="meal-item">
+        <img src="${optimalMeal.main.img_url}" alt="${optimalMeal.main.name}" style="width: 100px; height: auto;">
+        <p><strong>Main:</strong> ${optimalMeal.main.name}</p>
+    </div>
+    <div class="meal-item">
+        <img src="${optimalMeal.side.img_url}" alt="${optimalMeal.side.name}" style="width: 100px; height: auto;">
+        <p><strong>Side:</strong> ${optimalMeal.side.name}</p>
+    </div>
+    <div class="meal-item">
+        <img src="${optimalMeal.drink.img_url}" alt="${optimalMeal.drink.name}" style="width: 100px; height: auto;">
+        <p><strong>Drink:</strong> ${optimalMeal.drink.name}</p>
+    </div>
+    <p><strong>Total ${propertyLabel}:</strong> ${optimalMeal.total.toFixed(2)}</p>
+            `;
+        }
+
+        function mealDealRoulette() {
+            const property = document.getElementById('property').value;
+            
+            // Randomly select one item from each category
+            const randomMain = mains[Math.floor(Math.random() * mains.length)];
+            const randomSide = sides[Math.floor(Math.random() * sides.length)];
+            const randomDrink = drinks[Math.floor(Math.random() * drinks.length)];
+      
+            const randomMeal = {
+                main: randomMain,
+                side: randomSide,
+                drink: randomDrink,
+            };
+
+            // Display result
+            const propertyLabel = document.getElementById('property').options[document.getElementById('property').selectedIndex].text;
+            document.getElementById('result').innerHTML = `
+                <div class="meal-item">
+                    <img src="${randomMeal.main.img_url}" alt="${randomMeal.main.name}" style="width: 100px; height: auto;">
+                    <p><strong>Main:</strong> ${randomMeal.main.name}</p>
+                </div>
+                <div class="meal-item">
+                    <img src="${randomMeal.side.img_url}" alt="${randomMeal.side.name}" style="width: 100px; height: auto;">
+                    <p><strong>Side:</strong> ${randomMeal.side.name}</p>
+                </div>
+                <div class="meal-item">
+                    <img src="${randomMeal.drink.img_url}" alt="${randomMeal.drink.name}" style="width: 100px; height: auto;">
+                    <p><strong>Drink:</strong> ${randomMeal.drink.name}</p>
+                </div>
+            `;
+        }
+
+
+        // Add event listeners
+        document.getElementById('property').addEventListener('change', findOptimalMeal);
+        document.getElementById('mode').addEventListener('change', findOptimalMeal);
+
+        // document.getElementById('randomiseButton').addEventListener('click', mealDealRoulette);
+        
+        // Initial calculation
+        findOptimalMeal();
+    </script>
+</body>
+</html>
