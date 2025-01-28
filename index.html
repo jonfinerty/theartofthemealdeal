@@ -9,16 +9,16 @@
             margin: 20px auto;
             padding: 0 20px;
         }
-        .container {
+        /* .container {
             border: 1px solid #ccc;
             padding: 20px;
             border-radius: 8px;
-        }
+        } */
         .controls {
             margin-bottom: 20px;
         }
         .result {
-            background: #f5f5f5;
+            /* background: #f5f5f5; */
             padding: 15px;
             border-radius: 4px;
             margin-top: 20px;
@@ -128,20 +128,20 @@
             // Display result
             const propertyLabel = document.getElementById('property').options[document.getElementById('property').selectedIndex].text;
             document.getElementById('result').innerHTML = `
-<div class="meal-item">
-        <img src="${optimalMeal.main.img_url}" alt="${optimalMeal.main.name}" style="width: 100px; height: auto;">
-        <p><strong>Main:</strong> ${optimalMeal.main.name}</p>
-    </div>
-    <div class="meal-item">
-        <img src="${optimalMeal.side.img_url}" alt="${optimalMeal.side.name}" style="width: 100px; height: auto;">
-        <p><strong>Side:</strong> ${optimalMeal.side.name}</p>
-    </div>
-    <div class="meal-item">
-        <img src="${optimalMeal.drink.img_url}" alt="${optimalMeal.drink.name}" style="width: 100px; height: auto;">
-        <p><strong>Drink:</strong> ${optimalMeal.drink.name}</p>
-    </div>
-    <p><strong>Total ${propertyLabel}:</strong> ${optimalMeal.total.toFixed(2)}</p>
-            `;
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0;">
+                    <div class="meal-item" title="${optimalMeal.main.name}">
+                        <img src="${optimalMeal.main.img_url}" alt="${optimalMeal.main.name}" style="width: 100px; height: auto;">
+                    </div>
+                    <div style="font-size: 24px; font-weight: bold;">+</div>
+                    <div class="meal-item" title="${optimalMeal.side.name}">
+                        <img src="${optimalMeal.side.img_url}" alt="${optimalMeal.side.name}" style="width: 100px; height: auto;">
+                    </div>
+                    <div style="font-size: 24px; font-weight: bold;">+</div>
+                    <div class="meal-item" title="${optimalMeal.drink.name}">
+                        <img src="${optimalMeal.drink.img_url}" alt="${optimalMeal.drink.name}" style="width: 100px; height: auto;">
+                    </div>
+                </div>
+                <p style="text-align: center;"><strong>Total ${propertyLabel}:</strong> ${optimalMeal.total.toFixed(2)}</p>`;
         }
 
         function mealDealRoulette() {
