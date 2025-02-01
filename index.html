@@ -173,7 +173,7 @@
           </p>
           <p class="meal-detail-row">
             <strong class="meal-label"
-              ><span id="property-label"></span>:</strong
+              ><span id="property-label"></span></strong
             >
             <span id="total-value"></span>
           </p>
@@ -267,16 +267,16 @@
 
         let label = "";
         if (property === "cals") {
-          label = "Calories";
+          label = "Calories:";
           value = `${optimalMeal.total.toFixed(0)}kcal`;
         } else if (property === "price") {
-          label = "Price";
+          label = "Price:";
           value = `£${optimalMeal.total.toFixed(2)}`;
         } else if (property === "weight") {
-          label = "Weight";
+          label = "Weight:";
           value = `${optimalMeal.total.toFixed(0)}g`;
         } else if (property === "dense") {
-          label = "Calorie Density";
+          label = "Calorie Density:";
           value = `${optimalMeal.total.toFixed(0)}kcal/g`;
         } else if (property === "random") {
           label = "";
@@ -295,41 +295,6 @@
 
           resultsElement.classList.remove("fade");
         }, 300);
-      }
-
-      function mealDealRoulette() {
-        const property = document.getElementById("property").value;
-
-        // Randomly select one item from each category
-        const randomMain = mains[Math.floor(Math.random() * mains.length)];
-        const randomSide = sides[Math.floor(Math.random() * sides.length)];
-        const randomDrink = drinks[Math.floor(Math.random() * drinks.length)];
-
-        const randomMeal = {
-          main: randomMain,
-          side: randomSide,
-          drink: randomDrink,
-        };
-
-        // Display result
-        const propertyLabel =
-          document.getElementById("property").options[
-            document.getElementById("property").selectedIndex
-          ].text;
-        document.getElementById("result").innerHTML = `
-                <div class="meal-item">
-                    <img src="${randomMeal.main.img_url}" alt="${randomMeal.main.name}" style="width: 100px; height: auto;">
-                    <p><strong>Main:</strong> ${randomMeal.main.name}</p>
-                </div>
-                <div class="meal-item">
-                    <img src="${randomMeal.side.img_url}" alt="${randomMeal.side.name}" style="width: 100px; height: auto;">
-                    <p><strong>Side:</strong> ${randomMeal.side.name}</p>
-                </div>
-                <div class="meal-item">
-                    <img src="${randomMeal.drink.img_url}" alt="${randomMeal.drink.name}" style="width: 100px; height: auto;">
-                    <p><strong>Drink:</strong> ${randomMeal.drink.name}</p>
-                </div>
-            `;
       }
 
       // Function to update query string with selected property
