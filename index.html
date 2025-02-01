@@ -139,6 +139,8 @@
         <option value="price" data-mode="min">Worst Savings Meal Deal</option>
         <option value="weight" data-mode="max">Heaviest Meal Deal</option>
         <option value="weight" data-mode="min">Lightest Meal Deal</option>
+        <option value="rating" data-mode="max">Highest Rated Meal Deal</option>
+        <option value="rating" data-mode="min">Lowest Rated Meal Deal</option>
         <option value="dense" data-mode="max">
           Most Calorie-Dense Meal Deal
         </option>
@@ -314,6 +316,9 @@
       } else if (property === "dense") {
         label = "Calorie Density:";
         value = `${optimalMeal.total.toFixed(0)}kcal/g`;
+      } else if (property === "rating") {
+        label = "Average Rating:";
+        value = `${(optimalMeal.total / 3 ).toFixed(1)}`;
       } else if (property === "allergens") {
         label = "Allergens:";
         allergens = new Set([...normaliseAllergens(optimalMeal.main['allegens']), ...normaliseAllergens(optimalMeal.side['allegens']), ...normaliseAllergens(optimalMeal.drink['allegens'])])
@@ -364,13 +369,9 @@
         const select = document.getElementById("property");
         select.value = property;
 
-        // Ensure the correct mode is applied to the selection
-        for (let option of select.options) {
-          if (option.value === property && option.dataset.mode === mode) {
-            select.value = property;
-            break;
-          }
-        }
+        if (mode === 'min') {
+          select.selectedIndex +=1
+        } 
       }
     }
 
