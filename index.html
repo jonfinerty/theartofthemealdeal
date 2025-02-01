@@ -1,169 +1,280 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Meal Deal Optimizer</title>
     <style>
-        
-        .oswald-200 {
-            font-family: "Oswald", serif;
-            font-optical-sizing: auto;
-            font-weight: 200;
-            font-style: normal;
-        }
-        body {
-            font-family: "Oswald", serif;
-            font-optical-sizing: auto;
-            font-weight: 200;
-            font-style: normal;            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        div {
-            text-align: center;
-        }
-        h1 {
-            font-size: 6em;
-            text-align: center;
-        }
-        .controls {
-            margin-bottom: 20px;
-        }
-        .result {
-            /* background: #f5f5f5; */
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-        }
-        button {
-            padding: 8px 16px;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        .active {
-            background: #007bff;
-            color: white;
-            border: none;
-        }
-        .sentence {
-            font-size: 1.2em;
-            margin: 20px 0;
-        }
-        .inline-select {
-            font-family: "Oswald", serif;
-            font-size: inherit;
-            display: inline;
-            width: auto;
-            padding: 2px 5px;
-            border: none;
-            border-bottom: 2px solid #333;
-            background: transparent;
-            cursor: pointer;
-        }
-        .inline-select:focus {
-            outline: none;
-            border-bottom-color: #666;
-        }
+      .oswald-200 {
+        font-family: "Oswald", serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-style: normal;
+      }
+      body {
+        font-family: "Oswald", serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-style: normal;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+        transition: opacity 1s ease-in-out;
+      }
+      div {
+        text-align: center;
+      }
+      h1 {
+        font-family: "Oswald", serif;
+        font-weight: 200;
+
+        font-size: 6em;
+        text-align: center;
+      }
+      .controls {
+        margin-bottom: 20px;
+      }
+      .result {
+        /* background: #f5f5f5; */
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+      }
+      button {
+        padding: 8px 16px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+      .active {
+        background: #007bff;
+        color: white;
+        border: none;
+      }
+      .sentence {
+        font-size: 1.2em;
+        margin: 20px 0;
+      }
+      .inline-select {
+        font-family: "Oswald", serif;
+        font-size: 2em;
+        display: inline;
+        width: auto;
+        padding: 2px 5px;
+        border: none;
+        border-bottom: 2px solid #333;
+        background: transparent;
+        cursor: pointer;
+      }
+      .inline-select:focus {
+        outline: none;
+        border-bottom-color: #666;
+      }
+      img {
+        filter: grayscale(0.5);
+        width: 160px;
+        height: auto;
+      }
+      #result {
+        transition: opacity 0.3s ease-in-out;
+        color: #444;
+      }
+      .fade {
+        opacity: 0;
+      }
+      #meal-details {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .meal-detail-row {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .meal-label {
+        min-width: 160px;
+        text-align: right;
+      }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
     <script src="mains.js"></script>
     <script src="sides.js"></script>
     <script src="drinks.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1 class="oswald-200">The Art of the Meal Deal</h1>
-        
-        <div class="sentence">
-            <select id="property" class="inline-select">
-                <option value="cals" data-mode="max">Highest calorie</option>
-                <option value="cals" data-mode="min">Lowest calorie</option>
-                <option value="price" data-mode="max">Best deal</option>
-                <option value="price" data-mode="min">Worst deal</option>
-                <option value="weight" data-mode="max">Heaviest</option>
-                <option value="weight" data-mode="min">Lightest</option>
-                <!-- <option value="allegens" data-mode="max">most allergic</option>
-                <option value="allegens" data-mode="min">least allergic</option>
-                <option value="most-dense" data-mode="max">most calorie dense</option>
-                <option value="lest-dense" data-mode="min">least calorie dense</option> -->
-            </select>
-            Sainsbury's meal deal
+      <h1>The Art of the Meal Deal</h1>
+
+      <div class="sentence">
+        <select id="property" class="inline-select">
+          <option value="cals" data-mode="max">Highest Calorie Meal Deal</option>
+          <option value="cals" data-mode="min">Lowest Calorie Meal Deal</option>
+          <option value="price" data-mode="max">Best Savings Meal Deal</option>
+          <option value="price" data-mode="min">Worst Savings Meal Deal</option>
+          <option value="weight" data-mode="max">Heaviest Meal Deal</option>
+          <option value="weight" data-mode="min">Lightest Meal Deal</option>
+        </select>
+      </div>
+
+      <div id="result">
+        <div
+          class="meal-display"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 120px;
+            margin-bottom: 80px;
+          "
+        >
+          <div class="meal-item" title="">
+            <img id="main-img" src="" alt="" />
+          </div>
+          <div class="meal-item" title="">
+            <img id="side-img" src="" alt="" />
+          </div>
+          <div class="meal-item" title="">
+            <img id="drink-img" src="" alt="" />
+          </div>
         </div>
-
-        <div id="result" class="result"></div>
-
+        <div id="meal-details">
+          <p class="meal-detail-row">
+            <strong class="meal-label">Main:</strong>
+            <span id="main-name"></span>
+          </p>
+          <p class="meal-detail-row">
+            <strong class="meal-label">Side:</strong>
+            <span id="side-name"></span>
+          </p>
+          <p class="meal-detail-row">
+            <strong class="meal-label">Drink:</strong>
+            <span id="drink-name"></span>
+          </p>
+          <p class="meal-detail-row">
+            <strong class="meal-label"
+              ><span id="property-label"></span>:</strong
+            >
+            <span id="total-value"></span>
+          </p>
+        </div>
+      </div>
     </div>
 
     <script>
-        function findOptimalMeal() {
-            select = document.getElementById('property')
-            const property = select.value;
-            const mode = select.options[select.selectedIndex].dataset.mode;
-            
-            // Find optimal combination
-            let optimalMeal = null;
-            let optimalValue = mode === 'max' ? -Infinity : Infinity;
+      function updateItem(type, item) {
+        const imgElement = document.getElementById(`${type}-img`);
+        const nameElement = document.getElementById(`${type}-name`);
+        const itemContainer = document.querySelector(
+          `.meal-item img[id="${type}-img"]`
+        ).parentElement;
 
-            mains.forEach(main => {
-                sides.forEach(side => {
-                    drinks.forEach(drink => {
-                        if (main[property] === null || side[property] === null || drink[property] === null) {
-                            return
-                        }
-                        const totalValue = main[property] + side[property] + drink[property];
-                        
-                        if (mode === 'max' && totalValue > optimalValue) {
-                            optimalValue = totalValue;
-                            optimalMeal = {main, side, drink, total: totalValue};
-                        }
-                        else if (mode === 'min' && totalValue < optimalValue) {
-                            optimalValue = totalValue;
-                            optimalMeal = {main, side, drink, total: totalValue};
-                        }
-                    });
-                });
+        imgElement.src = item.img_url;
+        imgElement.alt = item.name;
+        itemContainer.title = item.name;
+
+        imgElement.onload = () => {
+          imgElement.classList.remove("fade");
+        };
+
+        // Update text
+        nameElement.textContent = item.name;
+      }
+
+      function setMain(main) {
+        updateItem("main", main);
+      }
+
+      function setSide(side) {
+        updateItem("side", side);
+      }
+
+      function setDrink(drink) {
+        updateItem("drink", drink);
+      }
+
+      function findOptimalMeal() {
+        select = document.getElementById("property");
+        const property = select.value;
+        const mode = select.options[select.selectedIndex].dataset.mode;
+
+        // Find optimal combination
+        let optimalMeal = null;
+        let optimalValue = mode === "max" ? -Infinity : Infinity;
+
+        mains.forEach((main) => {
+          sides.forEach((side) => {
+            drinks.forEach((drink) => {
+              if (
+                main[property] === null ||
+                side[property] === null ||
+                drink[property] === null
+              ) {
+                return;
+              }
+              const totalValue =
+                main[property] + side[property] + drink[property];
+
+              if (mode === "max" && totalValue > optimalValue) {
+                optimalValue = totalValue;
+                optimalMeal = { main, side, drink, total: totalValue };
+              } else if (mode === "min" && totalValue < optimalValue) {
+                optimalValue = totalValue;
+                optimalMeal = { main, side, drink, total: totalValue };
+              }
             });
+          });
+        });
 
-            // Display result
-            const propertyLabel = document.getElementById('property').options[document.getElementById('property').selectedIndex].text;
-            document.getElementById('result').innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 120px 0;">
-                    <div class="meal-item" title="${optimalMeal.main.name}">
-                        <img src="${optimalMeal.main.img_url}" alt="${optimalMeal.main.name}" style="width: 100px; height: auto;">
-                    </div>
-                    <div style="font-size: 24px; font-weight: bold;">+</div>
-                    <div class="meal-item" title="${optimalMeal.side.name}">
-                        <img src="${optimalMeal.side.img_url}" alt="${optimalMeal.side.name}" style="width: 100px; height: auto;">
-                    </div>
-                    <div style="font-size: 24px; font-weight: bold;">+</div>
-                    <div class="meal-item" title="${optimalMeal.drink.name}">
-                        <img src="${optimalMeal.drink.img_url}" alt="${optimalMeal.drink.name}" style="width: 100px; height: auto;">
-                    </div>
-                </div>
-                <p><strong>Main:</strong> ${optimalMeal.main.name}</p>
-                <p><strong>Side:</strong> ${optimalMeal.side.name}</p>
-                <p><strong>Drink:</strong> ${optimalMeal.drink.name}</p>
-                <p><strong>Total ${propertyLabel}:</strong> ${optimalMeal.total.toFixed(2)}</p>`;
-        }
+        let label =""
+        if (property === "cals") {
+            label = "Calories";
+            value = `${optimalMeal.total.toFixed(0)}kcal`
+          } else if (property === "price") {
+             label = "Price";
+            value = `£${optimalMeal.total.toFixed(2)}`
+        } else if (property === "weight") {
+             label = "Weight";
+             value = `${optimalMeal.total.toFixed(0)}g`
+            }
 
-        function mealDealRoulette() {
-            const property = document.getElementById('property').value;
-            
-            // Randomly select one item from each category
-            const randomMain = mains[Math.floor(Math.random() * mains.length)];
-            const randomSide = sides[Math.floor(Math.random() * sides.length)];
-            const randomDrink = drinks[Math.floor(Math.random() * drinks.length)];
-      
-            const randomMeal = {
-                main: randomMain,
-                side: randomSide,
-                drink: randomDrink,
-            };
+        const resultsElement = document.getElementById("result");
+        resultsElement.classList.add("fade");
+        setTimeout(() => {
+          setMain(optimalMeal.main);
+          setSide(optimalMeal.side);
+          setDrink(optimalMeal.drink);
 
-            // Display result
-            const propertyLabel = document.getElementById('property').options[document.getElementById('property').selectedIndex].text;
-            document.getElementById('result').innerHTML = `
+          document.getElementById("property-label").textContent = label;
+          document.getElementById("total-value").textContent = value;
+
+          resultsElement.classList.remove("fade");
+        }, 300);
+      }
+
+      function mealDealRoulette() {
+        const property = document.getElementById("property").value;
+
+        // Randomly select one item from each category
+        const randomMain = mains[Math.floor(Math.random() * mains.length)];
+        const randomSide = sides[Math.floor(Math.random() * sides.length)];
+        const randomDrink = drinks[Math.floor(Math.random() * drinks.length)];
+
+        const randomMeal = {
+          main: randomMain,
+          side: randomSide,
+          drink: randomDrink,
+        };
+
+        // Display result
+        const propertyLabel =
+          document.getElementById("property").options[
+            document.getElementById("property").selectedIndex
+          ].text;
+        document.getElementById("result").innerHTML = `
                 <div class="meal-item">
                     <img src="${randomMeal.main.img_url}" alt="${randomMeal.main.name}" style="width: 100px; height: auto;">
                     <p><strong>Main:</strong> ${randomMeal.main.name}</p>
@@ -177,16 +288,17 @@
                     <p><strong>Drink:</strong> ${randomMeal.drink.name}</p>
                 </div>
             `;
-        }
+      }
 
+      // Add event listeners
+      document
+        .getElementById("property")
+        .addEventListener("change", findOptimalMeal);
 
-        // Add event listeners
-        document.getElementById('property').addEventListener('change', findOptimalMeal);
+      // document.getElementById('randomiseButton').addEventListener('click', mealDealRoulette);
 
-        // document.getElementById('randomiseButton').addEventListener('click', mealDealRoulette);
-        
-        // Initial calculation
-        findOptimalMeal();
+      // Initial calculation
+      findOptimalMeal();
     </script>
-</body>
+  </body>
 </html>
