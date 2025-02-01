@@ -1,257 +1,294 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Meal Deal Optimizer</title>
-    <style>
-      .oswald-200 {
-        font-family: "Oswald", serif;
-        font-optical-sizing: auto;
-        font-weight: 200;
-        font-style: normal;
-      }
-      body {
-        font-family: "Oswald", serif;
-        font-optical-sizing: auto;
-        font-weight: 200;
-        font-style: normal;
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 0 20px;
-        transition: opacity 1s ease-in-out;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      div {
-        text-align: center;
-      }
-      h1 {
-        font-family: "Oswald", serif;
-        font-weight: 200;
 
-        font-size: 6em;
-        text-align: center;
-      }
-      .controls {
-        margin-bottom: 20px;
-      }
-      .result {
-        /* background: #f5f5f5; */
-        padding: 15px;
-        border-radius: 4px;
-        margin-top: 20px;
-      }
-      button {
-        padding: 8px 16px;
-        margin: 0 5px;
-        cursor: pointer;
-      }
-      .active {
-        background: #007bff;
-        color: white;
-        border: none;
-      }
-      .sentence {
-        margin: 20px 0;
-      }
-      .inline-select {
-        font-family: "Oswald", serif;
-        font-size: 2em;
-        text-align: center;
-        display: inline;
-        width: auto;
-        padding: 8px 5px;
-        border: none;
-        border-bottom: 2px solid #333;
-        background: transparent;
-        cursor: pointer;
-      }
-      .inline-select:focus {
-        outline: none;
-        border-bottom-color: #666;
-      }
-      img {
-        filter: grayscale(0.5);
-        width: 160px;
-        height: auto;
-      }
-      #result {
-        transition: opacity 0.3s ease-in-out;
-        color: #444;
-        font-size: 1.2em;
-      }
-      .fade {
-        opacity: 0;
-      }
-      #meal-details {
-        max-width: 600px;
-        margin: 0 auto;
-      }
+<head>
+  <title>The Art of Meal Deal - Sainsbury's Meal Deal Optimizer</title>
+  <style>
+    .oswald-200 {
+      font-family: "Oswald", serif;
+      font-optical-sizing: auto;
+      font-weight: 200;
+      font-style: normal;
+    }
 
-      .meal-detail-row {
-        display: flex;
-        gap: 1rem;
-      }
-      .footer {
-        margin-top: 40px;
-        font-size: 0.9em;
-        color: #888;
-      }
-      .meal-label {
-        min-width: 160px;
-        text-align: right;
-      }
-    </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="mains.js"></script>
-    <script src="sides.js"></script>
-    <script src="drinks.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <h1>The Art of the Meal Deal</h1>
+    body {
+      font-family: "Oswald", serif;
+      font-optical-sizing: auto;
+      font-weight: 200;
+      font-style: normal;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 20px;
+      transition: opacity 1s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-      <div class="sentence">
-        <select id="property" class="inline-select">
-          <option value="cals" data-mode="max">
-            Highest Calorie Meal Deal
-          </option>
-          <option value="cals" data-mode="min">Lowest Calorie Meal Deal</option>
-          <option value="price" data-mode="max">Best Savings Meal Deal</option>
-          <option value="price" data-mode="min">Worst Savings Meal Deal</option>
-          <option value="weight" data-mode="max">Heaviest Meal Deal</option>
-          <option value="weight" data-mode="min">Lightest Meal Deal</option>
-          <option value="dense" data-mode="max">
-            Most Calorie-Dense Meal Deal
-          </option>
-          <option value="dense" data-mode="min">
-            Least Calorie-Dense Meal Deal
-          </option>
-          <option value="random">Random Meal Deal</option>
-        </select>
-      </div>
+    div {
+      text-align: center;
+    }
 
-      <div id="result" class="fade">
-        <div
-          class="meal-display"
-          style="
+    h1 {
+      font-family: "Oswald", serif;
+      font-weight: 200;
+
+      font-size: 6em;
+      text-align: center;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    .result {
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 8px 16px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .active {
+      background: #007bff;
+      color: white;
+      border: none;
+    }
+
+    .sentence {
+      margin: 20px 0;
+    }
+
+    .inline-select {
+      font-family: "Oswald", serif;
+      font-size: 2em;
+      text-align: center;
+      display: inline;
+      width: auto;
+      padding: 8px 5px;
+      border: none;
+      border-bottom: 2px solid #333;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .inline-select:focus {
+      outline: none;
+      border-bottom-color: #666;
+    }
+
+    img {
+      filter: grayscale(0.5);
+      width: 160px;
+      height: auto;
+    }
+
+    #result {
+      transition: opacity 0.3s ease-in-out;
+      color: #444;
+      font-size: 1.2em;
+    }
+
+    .fade {
+      opacity: 0;
+    }
+
+    #meal-details {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .meal-detail-row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #888;
+    }
+
+    .meal-label {
+      min-width: 160px;
+      text-align: right;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
+  <script src="mains.js"></script>
+  <script src="sides.js"></script>
+  <script src="drinks.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>The Art of the Meal Deal</h1>
+
+    <div class="sentence">
+      <select id="property" class="inline-select">
+        <option value="cals" data-mode="max">
+          Highest Calorie Meal Deal
+        </option>
+        <option value="cals" data-mode="min">Lowest Calorie Meal Deal</option>
+        <option value="price" data-mode="max">Best Savings Meal Deal</option>
+        <option value="price" data-mode="min">Worst Savings Meal Deal</option>
+        <option value="weight" data-mode="max">Heaviest Meal Deal</option>
+        <option value="weight" data-mode="min">Lightest Meal Deal</option>
+        <option value="dense" data-mode="max">
+          Most Calorie-Dense Meal Deal
+        </option>
+        <option value="dense" data-mode="min">
+          Least Calorie-Dense Meal Deal
+        </option>
+        <option value="allergens" data-mode="max">
+          Most Allergens Meal Deal
+        </option>
+        <option value="allergens" data-mode="min">
+          Fewest Allergens Meal Deal
+        </option>
+        <option value="random">Random Meal Deal</option>
+      </select>
+    </div>
+
+    <div id="result" class="fade">
+      <div class="meal-display" style="
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             margin-top: 120px;
             margin-bottom: 80px;
-          "
-        >
-          <div class="meal-item" title="">
-            <img id="main-img" src="" alt="" />
-          </div>
-          <div class="meal-item" title="">
-            <img id="side-img" src="" alt="" />
-          </div>
-          <div class="meal-item" title="">
-            <img id="drink-img" src="" alt="" />
-          </div>
+          ">
+        <div class="meal-item" title="">
+          <img id="main-img" src="" alt="" />
         </div>
-        <div id="meal-details">
-          <p class="meal-detail-row">
-            <strong class="meal-label">Main:</strong>
-            <span id="main-name"></span>
-          </p>
-          <p class="meal-detail-row">
-            <strong class="meal-label">Side:</strong>
-            <span id="side-name"></span>
-          </p>
-          <p class="meal-detail-row">
-            <strong class="meal-label">Drink:</strong>
-            <span id="drink-name"></span>
-          </p>
-          <p class="meal-detail-row">
-            <strong class="meal-label"
-              ><span id="property-label"></span></strong
-            >
-            <span id="total-value"></span>
-          </p>
+        <div class="meal-item" title="">
+          <img id="side-img" src="" alt="" />
         </div>
-        <div class="footer">Searched 1,354,752 Sainbury's Meal Deals</div>
+        <div class="meal-item" title="">
+          <img id="drink-img" src="" alt="" />
+        </div>
       </div>
+      <div id="meal-details">
+        <p class="meal-detail-row">
+          <strong class="meal-label">Main:</strong>
+          <span id="main-name"></span>
+        </p>
+        <p class="meal-detail-row">
+          <strong class="meal-label">Side:</strong>
+          <span id="side-name"></span>
+        </p>
+        <p class="meal-detail-row">
+          <strong class="meal-label">Drink:</strong>
+          <span id="drink-name"></span>
+        </p>
+        <p class="meal-detail-row">
+          <strong class="meal-label"><span id="property-label"></span></strong>
+          <span id="total-value"></span>
+        </p>
+      </div>
+      <div class="footer">Searched 1,354,752 Sainbury's Meal Deals</div>
     </div>
+  </div>
 
-    <script>
-      function updateItem(type, item) {
-        const imgElement = document.getElementById(`${type}-img`);
-        const nameElement = document.getElementById(`${type}-name`);
-        const itemContainer = document.querySelector(
-          `.meal-item img[id="${type}-img"]`
-        ).parentElement;
+  <script>
+    function updateItem(type, item) {
+      const imgElement = document.getElementById(`${type}-img`);
+      const nameElement = document.getElementById(`${type}-name`);
+      const itemContainer = document.querySelector(
+        `.meal-item img[id="${type}-img"]`
+      ).parentElement;
 
-        imgElement.src = item.img_url;
-        imgElement.alt = item.name;
-        itemContainer.title = item.name;
+      imgElement.src = item.img_url;
+      imgElement.alt = item.name;
+      itemContainer.title = item.name;
 
-        imgElement.onload = () => {
-          imgElement.classList.remove("fade");
-        };
+      imgElement.onload = () => {
+        imgElement.classList.remove("fade");
+      };
 
-        // Update text
-        nameElement.textContent = item.name;
+      // Update text
+      nameElement.textContent = item.name;
+    }
+
+    function setMain(main) {
+      updateItem("main", main);
+    }
+
+    function setSide(side) {
+      updateItem("side", side);
+    }
+
+    function setDrink(drink) {
+      updateItem("drink", drink);
+    }
+
+    function normaliseAllergens(input) {
+      if (input == null) {
+        return new Set()
       }
+      // Extract items from the string and normalize them
+      return new Set(
+        input.replace(/[\{\}']/g, "") // Remove curly braces and single quotes
+          .split(",") // Split by commas
+          .map(a => a.trim()) // Trim spaces
+          .map(a => a.charAt(0).toUpperCase() + a.slice(1).toLowerCase()) // Normalize to title case
+      );
+    }
 
-      function setMain(main) {
-        updateItem("main", main);
-      }
+    function findOptimalMeal() {
+      select = document.getElementById("property");
+      const property = select.value;
+      const mode = select.options[select.selectedIndex].dataset.mode;
 
-      function setSide(side) {
-        updateItem("side", side);
-      }
+      // Find optimal combination
+      let optimalMeal = null;
+      let optimalValue = mode === "max" ? -Infinity : Infinity;
 
-      function setDrink(drink) {
-        updateItem("drink", drink);
-      }
-
-      function findOptimalMeal() {
-        select = document.getElementById("property");
-        const property = select.value;
-        const mode = select.options[select.selectedIndex].dataset.mode;
-
-        // Find optimal combination
-        let optimalMeal = null;
-        let optimalValue = mode === "max" ? -Infinity : Infinity;
-
-        if (property === "random") {
-          const main = mains[Math.floor(Math.random() * mains.length)];
-          const side = sides[Math.floor(Math.random() * sides.length)];
-          const drink = drinks[Math.floor(Math.random() * drinks.length)];
-          optimalMeal = { main, side, drink, total : "" };
-        } else {
+      if (property === "random") {
+        const main = mains[Math.floor(Math.random() * mains.length)];
+        const side = sides[Math.floor(Math.random() * sides.length)];
+        const drink = drinks[Math.floor(Math.random() * drinks.length)];
+        optimalMeal = { main, side, drink, total: "" };
+      } else {
         mains.forEach((main) => {
+          let mainAllergens = normaliseAllergens(main['allegens'])
+
           sides.forEach((side) => {
+            let sideAllergens = normaliseAllergens(side['allegens'])
             drinks.forEach((drink) => {
+              let drinkAllergens = normaliseAllergens(drink['allegens'])
               let mainValue = null;
               let sideValue = null;
               let drinkValue = null;
+              let totalValue = null;
               if (property === "dense") {
                 mainValue = main["cals"] / main["weight"];
                 sideValue = side["cals"] / side["weight"];
                 drinkValue = drink["cals"] / drink["weight"];
+                totalValue = mainValue + sideValue + drinkValue;
+              } else if (property === "allergens") {
+                totalValue = new Set([...mainAllergens, ...sideAllergens, ...drinkAllergens]).size
               } else {
                 mainValue = main[property];
                 sideValue = side[property];
                 drinkValue = drink[property];
+                if (
+                  mainValue === null ||
+                  sideValue === null ||
+                  drinkValue === null
+                ) {
+                  return;
+                }
+
+                totalValue = mainValue + sideValue + drinkValue;
               }
-              if (
-                mainValue === null ||
-                sideValue === null ||
-                drinkValue === null
-              ) {
-                return;
-              }
-              const totalValue = mainValue + sideValue + drinkValue;
 
               if (mode === "max" && totalValue > optimalValue) {
                 optimalValue = totalValue;
@@ -263,88 +300,93 @@
             });
           });
         });
+      }
+
+      let label = "";
+      if (property === "cals") {
+        label = "Calories:";
+        value = `${optimalMeal.total.toFixed(0)}kcal`;
+      } else if (property === "price") {
+        label = "Price:";
+        value = `£${optimalMeal.total.toFixed(2)}`;
+      } else if (property === "weight") {
+        label = "Weight:";
+        value = `${optimalMeal.total.toFixed(0)}g`;
+      } else if (property === "dense") {
+        label = "Calorie Density:";
+        value = `${optimalMeal.total.toFixed(0)}kcal/g`;
+      } else if (property === "allergens") {
+        label = "Allergens:";
+        allergens = new Set([...normaliseAllergens(optimalMeal.main['allegens']), ...normaliseAllergens(optimalMeal.side['allegens']), ...normaliseAllergens(optimalMeal.drink['allegens'])])
+        value = `${[...allergens].join(", ")}`;
+      } else if (property === "random") {
+        label = "";
+        value = "";
+      }
+
+      const resultsElement = document.getElementById("result");
+      resultsElement.classList.add("fade");
+      setTimeout(() => {
+        setMain(optimalMeal.main);
+        setSide(optimalMeal.side);
+        setDrink(optimalMeal.drink);
+
+        document.getElementById("property-label").textContent = label;
+        document.getElementById("total-value").textContent = value;
+
+        resultsElement.classList.remove("fade");
+      }, 300);
     }
 
-        let label = "";
-        if (property === "cals") {
-          label = "Calories:";
-          value = `${optimalMeal.total.toFixed(0)}kcal`;
-        } else if (property === "price") {
-          label = "Price:";
-          value = `£${optimalMeal.total.toFixed(2)}`;
-        } else if (property === "weight") {
-          label = "Weight:";
-          value = `${optimalMeal.total.toFixed(0)}g`;
-        } else if (property === "dense") {
-          label = "Calorie Density:";
-          value = `${optimalMeal.total.toFixed(0)}kcal/g`;
-        } else if (property === "random") {
-          label = "";
-          value = "";
-        }
+    // Function to update query string with selected property
+    function updateQueryString() {
+      const select = document.getElementById("property");
+      const selectedValue = select.value;
 
-        const resultsElement = document.getElementById("result");
-        resultsElement.classList.add("fade");
-        setTimeout(() => {
-          setMain(optimalMeal.main);
-          setSide(optimalMeal.side);
-          setDrink(optimalMeal.drink);
-
-          document.getElementById("property-label").textContent = label;
-          document.getElementById("total-value").textContent = value;
-
-          resultsElement.classList.remove("fade");
-        }, 300);
-      }
-
-      // Function to update query string with selected property
-      function updateQueryString() {
-        const select = document.getElementById("property");
-        const selectedValue = select.value;
-
-        const newUrl = new URL(window.location);
-        newUrl.searchParams.set("property", selectedValue);
-        if (selectedValue != 'random') {
+      const newUrl = new URL(window.location);
+      newUrl.searchParams.set("property", selectedValue);
+      if (selectedValue != 'random') {
         const selectedMode = select.options[select.selectedIndex].dataset.mode;
         newUrl.searchParams.set("mode", selectedMode);
-        } else {
-            newUrl.searchParams.delete("mode");
+      } else {
+        newUrl.searchParams.delete("mode");
 
-        }
-        window.history.replaceState({}, "", newUrl);
       }
+      window.history.replaceState({}, "", newUrl);
+    }
 
-      // Function to restore selection from query string
-      function restoreSelectionFromQuery() {
-        const params = new URLSearchParams(window.location.search);
-        const property = params.get("property");
-        const mode = params.get("mode");
+    // Function to restore selection from query string
+    function restoreSelectionFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const property = params.get("property");
+      const mode = params.get("mode");
 
-        if (property) {
-          const select = document.getElementById("property");
-          select.value = property;
+      if (property) {
+        const select = document.getElementById("property");
+        select.value = property;
 
-          // Ensure the correct mode is applied to the selection
-          for (let option of select.options) {
-            if (option.value === property && option.dataset.mode === mode) {
-              select.value = property;
-              break;
-            }
+        // Ensure the correct mode is applied to the selection
+        for (let option of select.options) {
+          if (option.value === property && option.dataset.mode === mode) {
+            select.value = property;
+            break;
           }
         }
       }
+    }
 
-      // Attach event listener
-      document.getElementById("property").addEventListener("change", () => {
-        updateQueryString();
-        findOptimalMeal(); // Recalculate the meal deal
-      });
+    // Attach event listener
+    document.getElementById("property").addEventListener("change", () => {
+      updateQueryString();
+      findOptimalMeal(); // Recalculate the meal deal
+    });
 
-      // Restore selection on page load
-      window.addEventListener("DOMContentLoaded", () => {
-        restoreSelectionFromQuery();
-        findOptimalMeal(); // Ensure the correct meal is displayed on load
-      });
-    </script>
-  </body>
+    // Restore selection on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      restoreSelectionFromQuery();
+      findOptimalMeal(); // Ensure the correct meal is displayed on load
+    });
+  </script>
+</body>
+
 </html>
