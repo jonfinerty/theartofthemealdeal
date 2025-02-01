@@ -3,17 +3,28 @@
 <head>
     <title>Meal Deal Optimizer</title>
     <style>
+        
+        .oswald-200 {
+            font-family: "Oswald", serif;
+            font-optical-sizing: auto;
+            font-weight: 200;
+            font-style: normal;
+        }
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
+            font-family: "Oswald", serif;
+            font-optical-sizing: auto;
+            font-weight: 200;
+            font-style: normal;            max-width: 800px;
             margin: 20px auto;
             padding: 0 20px;
         }
-        /* .container {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 8px;
-        } */
+        div {
+            text-align: center;
+        }
+        h1 {
+            font-size: 6em;
+            text-align: center;
+        }
         .controls {
             margin-bottom: 20px;
         }
@@ -38,6 +49,7 @@
             margin: 20px 0;
         }
         .inline-select {
+            font-family: "Oswald", serif;
             font-size: inherit;
             display: inline;
             width: auto;
@@ -52,29 +64,31 @@
             border-bottom-color: #666;
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <script src="mains.js"></script>
     <script src="sides.js"></script>
     <script src="drinks.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>The Art of the Meal Deal</h1>
+        <h1 class="oswald-200">The Art of the Meal Deal</h1>
         
         <div class="sentence">
-            What's the 
             <select id="property" class="inline-select">
-                <option value="cals" data-mode="max">highest calorie</option>
-                <option value="cals" data-mode="min">lowest calorie</option>
-                <option value="price" data-mode="max">best deal</option>
-                <option value="price" data-mode="min">worst deal</option>
-                <option value="weight" data-mode="max">heaviest</option>
-                <option value="weight" data-mode="min">lightest</option>
+                <option value="cals" data-mode="max">Highest calorie</option>
+                <option value="cals" data-mode="min">Lowest calorie</option>
+                <option value="price" data-mode="max">Best deal</option>
+                <option value="price" data-mode="min">Worst deal</option>
+                <option value="weight" data-mode="max">Heaviest</option>
+                <option value="weight" data-mode="min">Lightest</option>
                 <!-- <option value="allegens" data-mode="max">most allergic</option>
                 <option value="allegens" data-mode="min">least allergic</option>
                 <option value="most-dense" data-mode="max">most calorie dense</option>
                 <option value="lest-dense" data-mode="min">least calorie dense</option> -->
             </select>
-            Sainsbury's meal deal?
+            Sainsbury's meal deal
         </div>
 
         <div id="result" class="result"></div>
