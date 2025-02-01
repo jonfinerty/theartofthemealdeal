@@ -132,6 +132,7 @@
           <option value="dense" data-mode="min">
             Least Calorie-Dense Meal Deal
           </option>
+          <option value="random">Random Meal Deal</option>
         </select>
       </div>
 
@@ -222,6 +223,12 @@
         let optimalMeal = null;
         let optimalValue = mode === "max" ? -Infinity : Infinity;
 
+        if (property === "random") {
+          const main = mains[Math.floor(Math.random() * mains.length)];
+          const side = sides[Math.floor(Math.random() * sides.length)];
+          const drink = drinks[Math.floor(Math.random() * drinks.length)];
+          optimalMeal = { main, side, drink, total : "" };
+        } else {
         mains.forEach((main) => {
           sides.forEach((side) => {
             drinks.forEach((drink) => {
@@ -256,6 +263,7 @@
             });
           });
         });
+    }
 
         let label = "";
         if (property === "cals") {
@@ -270,6 +278,9 @@
         } else if (property === "dense") {
           label = "Calorie Density";
           value = `${optimalMeal.total.toFixed(0)}kcal/g`;
+        } else if (property === "random") {
+          label = "";
+          value = "";
         }
 
         const resultsElement = document.getElementById("result");
@@ -325,12 +336,16 @@
       function updateQueryString() {
         const select = document.getElementById("property");
         const selectedValue = select.value;
-        const selectedMode = select.options[select.selectedIndex].dataset.mode;
 
         const newUrl = new URL(window.location);
         newUrl.searchParams.set("property", selectedValue);
+        if (selectedValue != 'random') {
+        const selectedMode = select.options[select.selectedIndex].dataset.mode;
         newUrl.searchParams.set("mode", selectedMode);
+        } else {
+            newUrl.searchParams.delete("mode");
 
+        }
         window.history.replaceState({}, "", newUrl);
       }
 
