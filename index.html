@@ -18,6 +18,9 @@
         margin: 20px auto;
         padding: 0 20px;
         transition: opacity 1s ease-in-out;
+        display: flex;
+            flex-direction: column;
+            min-height: 100vh;
       }
       div {
         text-align: center;
@@ -75,6 +78,7 @@
       #result {
         transition: opacity 0.3s ease-in-out;
         color: #444;
+        font-size: 1.2em;
       }
       .fade {
         opacity: 0;
@@ -88,7 +92,11 @@
         display: flex;
         gap: 1rem;
       }
-
+      .footer {
+        margin-top: 40px;
+        font-size: 0.9em;
+        color: #888
+      }
       .meal-label {
         min-width: 160px;
         text-align: right;
@@ -110,7 +118,9 @@
 
       <div class="sentence">
         <select id="property" class="inline-select">
-          <option value="cals" data-mode="max">Highest Calorie Meal Deal</option>
+          <option value="cals" data-mode="max">
+            Highest Calorie Meal Deal
+          </option>
           <option value="cals" data-mode="min">Lowest Calorie Meal Deal</option>
           <option value="price" data-mode="max">Best Savings Meal Deal</option>
           <option value="price" data-mode="min">Worst Savings Meal Deal</option>
@@ -161,7 +171,10 @@
             <span id="total-value"></span>
           </p>
         </div>
-      </div>
+        <div class="footer">
+            Searched 1,354,752 Sainbury's Meal Deals
+        </div>
+    </div>
     </div>
 
     <script>
@@ -229,17 +242,17 @@
           });
         });
 
-        let label =""
+        let label = "";
         if (property === "cals") {
-            label = "Calories";
-            value = `${optimalMeal.total.toFixed(0)}kcal`
-          } else if (property === "price") {
-             label = "Price";
-            value = `£${optimalMeal.total.toFixed(2)}`
+          label = "Calories";
+          value = `${optimalMeal.total.toFixed(0)}kcal`;
+        } else if (property === "price") {
+          label = "Price";
+          value = `£${optimalMeal.total.toFixed(2)}`;
         } else if (property === "weight") {
-             label = "Weight";
-             value = `${optimalMeal.total.toFixed(0)}g`
-            }
+          label = "Weight";
+          value = `${optimalMeal.total.toFixed(0)}g`;
+        }
 
         const resultsElement = document.getElementById("result");
         resultsElement.classList.add("fade");
