@@ -4,7 +4,7 @@ import csv
 from pathlib import Path
 from bs4 import BeautifulSoup
 
-from details import Product, download_html
+from crawler.details import Product, download_html
 
 def extract_product_details(html_file):
     """
