@@ -25,9 +25,6 @@
       min-height: 100vh;
     }
 
-    div {
-      text-align: center;
-    }
 
     h1 {
       font-family: "Oswald", serif;
@@ -61,6 +58,7 @@
 
     .sentence {
       margin: 20px 0;
+      text-align: center;
     }
 
     .inline-select {
@@ -90,7 +88,7 @@
     #result {
       transition: opacity 0.3s ease-in-out;
       color: #444;
-      font-size: 1.2em;
+      font-size: 1.3em;
     }
 
     .fade {
@@ -108,9 +106,10 @@
     }
 
     .footer {
-      margin-top: 40px;
+      margin-top: 60px;
       font-size: 0.9em;
       color: #888;
+      text-align: right;
     }
 
     .meal-label {
@@ -319,7 +318,7 @@
         label = "Allergens:";
         allergens = new Set([...normaliseAllergens(optimalMeal.main['allegens']), ...normaliseAllergens(optimalMeal.side['allegens']), ...normaliseAllergens(optimalMeal.drink['allegens'])])
         value = `${[...allergens].join(", ")}`;
-      } else if (property === "random") {
+      } else {
         label = "";
         value = "";
       }
