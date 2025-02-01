@@ -19,8 +19,8 @@
         padding: 0 20px;
         transition: opacity 1s ease-in-out;
         display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+        flex-direction: column;
+        min-height: 100vh;
       }
       div {
         text-align: center;
@@ -52,15 +52,15 @@
         border: none;
       }
       .sentence {
-        font-size: 1.2em;
         margin: 20px 0;
       }
       .inline-select {
         font-family: "Oswald", serif;
         font-size: 2em;
+        text-align: center;
         display: inline;
         width: auto;
-        padding: 2px 5px;
+        padding: 8px 5px;
         border: none;
         border-bottom: 2px solid #333;
         background: transparent;
@@ -95,7 +95,7 @@
       .footer {
         margin-top: 40px;
         font-size: 0.9em;
-        color: #888
+        color: #888;
       }
       .meal-label {
         min-width: 160px;
@@ -126,10 +126,16 @@
           <option value="price" data-mode="min">Worst Savings Meal Deal</option>
           <option value="weight" data-mode="max">Heaviest Meal Deal</option>
           <option value="weight" data-mode="min">Lightest Meal Deal</option>
+          <option value="dense" data-mode="max">
+            Most Calorie-Dense Meal Deal
+          </option>
+          <option value="dense" data-mode="min">
+            Least Calorie-Dense Meal Deal
+          </option>
         </select>
       </div>
 
-      <div id="result">
+      <div id="result" class="fade">
         <div
           class="meal-display"
           style="
@@ -171,10 +177,8 @@
             <span id="total-value"></span>
           </p>
         </div>
-        <div class="footer">
-            Searched 1,354,752 Sainbury's Meal Deals
-        </div>
-    </div>
+        <div class="footer">Searched 1,354,752 Sainbury's Meal Deals</div>
+      </div>
     </div>
 
     <script>
@@ -221,15 +225,26 @@
         mains.forEach((main) => {
           sides.forEach((side) => {
             drinks.forEach((drink) => {
+              let mainValue = null;
+              let sideValue = null;
+              let drinkValue = null;
+              if (property === "dense") {
+                mainValue = main["cals"] / main["weight"];
+                sideValue = side["cals"] / side["weight"];
+                drinkValue = drink["cals"] / drink["weight"];
+              } else {
+                mainValue = main[property];
+                sideValue = side[property];
+                drinkValue = drink[property];
+              }
               if (
-                main[property] === null ||
-                side[property] === null ||
-                drink[property] === null
+                mainValue === null ||
+                sideValue === null ||
+                drinkValue === null
               ) {
                 return;
               }
-              const totalValue =
-                main[property] + side[property] + drink[property];
+              const totalValue = mainValue + sideValue + drinkValue;
 
               if (mode === "max" && totalValue > optimalValue) {
                 optimalValue = totalValue;
@@ -252,6 +267,9 @@
         } else if (property === "weight") {
           label = "Weight";
           value = `${optimalMeal.total.toFixed(0)}g`;
+        } else if (property === "dense") {
+          label = "Calorie Density";
+          value = `${optimalMeal.total.toFixed(0)}kcal/g`;
         }
 
         const resultsElement = document.getElementById("result");
@@ -303,15 +321,50 @@
             `;
       }
 
-      // Add event listeners
-      document
-        .getElementById("property")
-        .addEventListener("change", findOptimalMeal);
+      // Function to update query string with selected property
+      function updateQueryString() {
+        const select = document.getElementById("property");
+        const selectedValue = select.value;
+        const selectedMode = select.options[select.selectedIndex].dataset.mode;
 
-      // document.getElementById('randomiseButton').addEventListener('click', mealDealRoulette);
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set("property", selectedValue);
+        newUrl.searchParams.set("mode", selectedMode);
 
-      // Initial calculation
-      findOptimalMeal();
+        window.history.replaceState({}, "", newUrl);
+      }
+
+      // Function to restore selection from query string
+      function restoreSelectionFromQuery() {
+        const params = new URLSearchParams(window.location.search);
+        const property = params.get("property");
+        const mode = params.get("mode");
+
+        if (property) {
+          const select = document.getElementById("property");
+          select.value = property;
+
+          // Ensure the correct mode is applied to the selection
+          for (let option of select.options) {
+            if (option.value === property && option.dataset.mode === mode) {
+              select.value = property;
+              break;
+            }
+          }
+        }
+      }
+
+      // Attach event listener
+      document.getElementById("property").addEventListener("change", () => {
+        updateQueryString();
+        findOptimalMeal(); // Recalculate the meal deal
+      });
+
+      // Restore selection on page load
+      window.addEventListener("DOMContentLoaded", () => {
+        restoreSelectionFromQuery();
+        findOptimalMeal(); // Ensure the correct meal is displayed on load
+      });
     </script>
   </body>
 </html>
