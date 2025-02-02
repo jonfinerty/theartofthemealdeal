@@ -173,6 +173,9 @@
             <option value="allergens" data-mode="min">
               Fewest Allergens
             </option>
+            <option value="Protein" data-mode="max">
+              Most Protein
+            </option>
             <option value="oat" data-mode="preset">
               Triple Oat
             </option>
@@ -368,6 +371,9 @@
         } else if (property === "dense") {
           label = "Calorie Density:";
           value = `${optimalMeal.total.toFixed(0)}kcal/g`;
+        } else if (property === "Protein") {
+          label = "Protein:";
+          value = `${optimalMeal.total.toFixed(0)}g`;
         } else if (property === "rating") {
           label = "Average Rating:";
           value = `${(optimalMeal.total / 3).toFixed(1)}`;
