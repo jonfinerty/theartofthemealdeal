@@ -5,14 +5,7 @@
     <style>
       @font-face {
         font-family: "MerchantCopy";
-        src: url("MerchantCopy-GOXq.ttf") format("truetype");
-      }
-      .oswald-200 {
-        font-family: "Oswald", serif;
-        font-optical-sizing: auto;
-        font-weight: 200;
-        font-style: normal;
-      }
+        src: url("MerchantCopy-GOXq.ttf") format("truetype");      }
 
       body {
         font-family: "MerchantCopy", serif;
@@ -52,7 +45,8 @@
         flex: 2;
         transition: opacity 0.3s ease-in-out;
         color: #444;
-        font-size: 2vh;
+        font-size: 2em;
+
         font-family: "MerchantCopy";
       }
 
@@ -74,11 +68,15 @@
       }
 
       .inline-select {
+        height: auto;
+        width: auto;
         font-family: "MerchantCopy", serif;
         text-align: center;
-        font-size: 2em;
+        font-size: 3em;
+        font-size-adjust: from-font;
         padding-bottom: 10px;
-        font-size-adjust: 0.5;
+        display: inline;
+
         border: none;
         background: transparent;
         border-bottom: 2px solid #333;
@@ -90,8 +88,8 @@
       }
 
       img {
-        filter: grayscale(0.5);
-        width: 200px;
+        filter: grayscale(0.6);
+        width: 220px;
         height: auto;
       }
 
@@ -129,12 +127,6 @@
         text-align: center;
       }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
-      rel="stylesheet"
-    />
     <script src="mains.js"></script>
     <script src="sides.js"></script>
     <script src="drinks.js"></script>
