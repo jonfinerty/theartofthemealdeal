@@ -126,6 +126,10 @@
       .receipt-stars {
         text-align: center;
       }
+
+      a {
+        color: #888
+      }
     </style>
     <script src="mains.js"></script>
     <script src="sides.js"></script>
@@ -232,7 +236,10 @@
           </p>
           <p class="receipt-stars">***********</p>
         </div>
-        <div class="footer">Searched 1,354,752 Sainbury's Meal Deals</div>
+        <div class="footer">
+          <p>Searched 1,354,752 Sainbury's Meal Deals</p>
+          <p>made by <a href="http://jonathanfinerty.com">Jon Finerty</a></p>
+        </div>
       </div>
     </div>
 
@@ -368,7 +375,7 @@
           value = `${optimalMeal.total.toFixed(0)}kcal`;
         } else if (property === "price") {
           label = "Price:";
-          value = `£${optimalMeal.total.toFixed(2)}`;
+          value = `${optimalMeal.total.toFixed(2)}GBP`;
         } else if (property === "weight") {
           label = "Weight:";
           value = `${optimalMeal.total.toFixed(0)}g`;
