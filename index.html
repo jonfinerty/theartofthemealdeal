@@ -4,8 +4,8 @@
     <title>The Art of Meal Deal - Sainsbury's Meal Deal Optimizer</title>
     <style>
       @font-face {
-        font-family: 'MerchantCopy';
-        src: url('MerchantCopy-GOXq.ttf') format('truetype');
+        font-family: "MerchantCopy";
+        src: url("MerchantCopy-GOXq.ttf") format("truetype");
       }
       .oswald-200 {
         font-family: "Oswald", serif;
@@ -37,7 +37,6 @@
         align-content: end;
       }
 
-
       h1 {
         font-family: "MerchantCopy", serif;
         font-weight: 200;
@@ -54,7 +53,7 @@
         transition: opacity 0.3s ease-in-out;
         color: #444;
         font-size: 2vh;
-        font-family: 'MerchantCopy';
+        font-family: "MerchantCopy";
       }
 
       button {
@@ -75,20 +74,19 @@
       }
 
       .inline-select {
-
         font-family: "MerchantCopy", serif;
         font-size: 2em;
-         text-align: center;
-        padding-bottom: 10px; 
+        text-align: center;
+        padding-bottom: 10px;
         font-size-adjust: 0.5;
-        border: none; 
+        border: none;
         border-bottom: 2px solid #333;
         cursor: pointer;
       }
 
       .inline-select:focus {
         outline: none;
-}
+      }
 
       img {
         filter: grayscale(0.5);
@@ -99,7 +97,6 @@
       .fade {
         opacity: 0;
       }
-
 
       .meal-detail-row {
         display: flex;
@@ -145,40 +142,46 @@
   <body>
     <div class="container">
       <div id="header">
-        
-      <h1>The Art of the Meal Deal</h1>
+        <h1>The Art of the Meal Deal</h1>
 
-      <div class="selector">
-        <select id="property" class="inline-select">
-          <option value="cals" data-mode="max">
-            Highest Calorie Meal Deal
-          </option>
-          <option value="cals" data-mode="min">Lowest Calorie Meal Deal</option>
-          <option value="price" data-mode="max">Best Savings Meal Deal</option>
-          <option value="price" data-mode="min">Worst Savings Meal Deal</option>
-          <option value="weight" data-mode="max">Heaviest Meal Deal</option>
-          <option value="weight" data-mode="min">Lightest Meal Deal</option>
-          <option value="rating" data-mode="max">
-            Highest Rated Meal Deal
-          </option>
-          <option value="rating" data-mode="min">Lowest Rated Meal Deal</option>
-          <option value="dense" data-mode="max">
-            Most Calorie-Dense Meal Deal
-          </option>
-          <option value="dense" data-mode="min">
-            Least Calorie-Dense Meal Deal
-          </option>
-          <option value="allergens" data-mode="max">
-            Most Allergens Meal Deal
-          </option>
-          <option value="allergens" data-mode="min">
-            Fewest Allergens Meal Deal
-          </option>
-          <option value="random">Random Meal Deal</option>
-        </select>
+        <div class="selector">
+          <select id="property" class="inline-select">
+            <option value="cals" data-mode="max">
+              Highest Calorie Meal Deal
+            </option>
+            <option value="cals" data-mode="min">
+              Lowest Calorie Meal Deal
+            </option>
+            <option value="price" data-mode="max">
+              Best Savings Meal Deal
+            </option>
+            <option value="price" data-mode="min">
+              Worst Savings Meal Deal
+            </option>
+            <option value="weight" data-mode="max">Heaviest Meal Deal</option>
+            <option value="weight" data-mode="min">Lightest Meal Deal</option>
+            <option value="rating" data-mode="max">
+              Highest Rated Meal Deal
+            </option>
+            <option value="rating" data-mode="min">
+              Lowest Rated Meal Deal
+            </option>
+            <option value="dense" data-mode="max">
+              Most Calorie-Dense Meal Deal
+            </option>
+            <option value="dense" data-mode="min">
+              Least Calorie-Dense Meal Deal
+            </option>
+            <option value="allergens" data-mode="max">
+              Most Allergens Meal Deal
+            </option>
+            <option value="allergens" data-mode="min">
+              Fewest Allergens Meal Deal
+            </option>
+            <option value="random">Random Meal Deal</option>
+          </select>
+        </div>
       </div>
-      
-    </div>
 
       <div id="result" class="fade">
         <div class="meal-display">
@@ -208,8 +211,8 @@
           </p>
           <p class="meal-detail-row">
             <strong class="meal-label">
-              <span id="property-label"></span  >
-          </strong>
+              <span id="property-label"></span>
+            </strong>
             <span id="total-value"></span>
           </p>
           <p class="receipt-stars">***********</p>
