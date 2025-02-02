@@ -146,39 +146,55 @@
 
         <div class="selector">
           <select id="property" class="inline-select">
+            
+            <option value="random">Random</option>
             <option value="cals" data-mode="max">
-              Highest Calorie Meal Deal
+              Highest Calorie
             </option>
             <option value="cals" data-mode="min">
-              Lowest Calorie Meal Deal
+              Lowest Calorie
             </option>
             <option value="price" data-mode="max">
-              Best Savings Meal Deal
+              Best Savings
             </option>
             <option value="price" data-mode="min">
-              Worst Savings Meal Deal
+              Worst Savings
             </option>
-            <option value="weight" data-mode="max">Heaviest Meal Deal</option>
-            <option value="weight" data-mode="min">Lightest Meal Deal</option>
+            <option value="weight" data-mode="max">Heaviest</option>
+            <option value="weight" data-mode="min">Lightest</option>
             <option value="rating" data-mode="max">
-              Highest Rated Meal Deal
+              Highest Rated
             </option>
             <option value="rating" data-mode="min">
-              Lowest Rated Meal Deal
+              Lowest Rated
             </option>
             <option value="dense" data-mode="max">
-              Most Calorie-Dense Meal Deal
+              Most Calorie-Dense
             </option>
             <option value="dense" data-mode="min">
-              Least Calorie-Dense Meal Deal
+              Least Calorie-Dense
             </option>
             <option value="allergens" data-mode="max">
-              Most Allergens Meal Deal
+              Most Allergens
             </option>
             <option value="allergens" data-mode="min">
-              Fewest Allergens Meal Deal
+              Fewest Allergens
             </option>
-            <option value="random">Random Meal Deal</option>
+            <option value="oat" data-mode="preset">
+              Triple Oat
+            </option>
+            <option value="egg" data-mode="preset">
+              Too Many Eggs
+            </option>
+            <option value="posh" data-mode="preset">
+              Posh it Up
+            </option>
+            <option value="choc" data-mode="preset">
+              Chocoholic
+            </option>
+            <option value="cursed" data-mode="preset">
+              Cursed 
+            </option>
           </select>
         </div>
       </div>
@@ -222,6 +238,16 @@
     </div>
 
     <script>
+      // -2
+      const preset = {
+        egg : { main: 27, side: 106, drink: 51},
+        oat : { main: 50, side: 71, drink: 119},
+        posh : { main: 11, side: 5, drink: 33},
+        choc : { main: 53, side: 76, drink: 43},
+        cursed : { main: 10, side: 6, drink: 124},
+
+      }
+
       function updateItem(type, item) {
         const imgElement = document.getElementById(`${type}-img`);
         const nameElement = document.getElementById(`${type}-name`);
@@ -280,6 +306,11 @@
           const main = mains[Math.floor(Math.random() * mains.length)];
           const side = sides[Math.floor(Math.random() * sides.length)];
           const drink = drinks[Math.floor(Math.random() * drinks.length)];
+          optimalMeal = { main, side, drink, total: "" };
+        } else if (mode === 'preset') {
+          const main = mains[preset[property].main];
+          const side = sides[preset[property].side];
+          const drink = drinks[preset[property].drink];
           optimalMeal = { main, side, drink, total: "" };
         } else {
           mains.forEach((main) => {
