@@ -3,6 +3,10 @@
   <head>
     <title>The Art of Meal Deal - Sainsbury's Meal Deal Optimizer</title>
     <style>
+      @font-face {
+        font-family: 'MerchantCopy';
+        src: url('MerchantCopy-GOXq.ttf') format('truetype');
+      }
       .oswald-200 {
         font-family: "Oswald", serif;
         font-optical-sizing: auto;
@@ -11,7 +15,7 @@
       }
 
       body {
-        font-family: "Oswald", serif;
+        font-family: "MerchantCopy", serif;
         font-optical-sizing: auto;
         font-weight: 200;
         font-style: normal;
@@ -35,10 +39,9 @@
 
 
       h1 {
-        font-family: "Oswald", serif;
+        font-family: "MerchantCopy", serif;
         font-weight: 200;
-
-        font-size: 6em;
+        font-size: 5em;
         text-align: center;
       }
 
@@ -51,6 +54,7 @@
         transition: opacity 0.3s ease-in-out;
         color: #444;
         font-size: 2vh;
+        font-family: 'MerchantCopy';
       }
 
       button {
@@ -71,22 +75,20 @@
       }
 
       .inline-select {
-        font-family: "Oswald", serif;
+
+        font-family: "MerchantCopy", serif;
         font-size: 2em;
-        text-align: center;
-        display: inline;
-        width: auto;
-        padding: 8px 5px;
-        border: none;
+         text-align: center;
+        padding-bottom: 10px; 
+        font-size-adjust: 0.5;
+        border: none; 
         border-bottom: 2px solid #333;
-        background: transparent;
         cursor: pointer;
       }
 
       .inline-select:focus {
         outline: none;
-        border-bottom-color: #666;
-      }
+}
 
       img {
         filter: grayscale(0.5);
@@ -123,6 +125,10 @@
         gap: 10px;
         margin-top: 120px;
         margin-bottom: 80px;
+      }
+
+      .receipt-stars {
+        text-align: center;
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -187,6 +193,7 @@
           </div>
         </div>
         <div id="meal-details">
+          <p class="receipt-stars">***********</p>
           <p class="meal-detail-row">
             <strong class="meal-label">Main:</strong>
             <span id="main-name"></span>
@@ -205,6 +212,7 @@
           </strong>
             <span id="total-value"></span>
           </p>
+          <p class="receipt-stars">***********</p>
         </div>
         <div class="footer">Searched 1,354,752 Sainbury's Meal Deals</div>
       </div>
